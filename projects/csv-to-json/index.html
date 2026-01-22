@@ -3,6 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <title>CSV to JSON Converter</title>
+  <meta
+    name="description"
+    content="Convert your Dynamo-style CSV exports into plain JSON in seconds. Normalizes attribute maps (S, N, BOOL) while preserving booleans and numbers."
+  />
+  <meta
+    name="keywords"
+    content="CSV,JSON,converter,DynamoDB,attribute map,S N M BOOL normalization"
+  />
+  <meta name="author" content="Jovylle B. Bermudez" />
   <style>
     body {
       font-family: system-ui, sans-serif;
@@ -21,6 +30,19 @@
       font-size: 16px;
       cursor: pointer;
     }
+    section {
+      margin-top: 32px;
+      padding: 18px;
+      border: 1px solid #e8e8e8;
+      border-radius: 12px;
+      background: #f9f9fb;
+    }
+    section h3 {
+      margin-top: 0;
+    }
+    a {
+      color: royalblue;
+    }
   </style>
 </head>
 <body>
@@ -34,6 +56,24 @@
 
 <p>JSON output:</p>
 <textarea id="json" readonly></textarea>
+
+<section aria-label="about this tool">
+  <h3>Why this converter?</h3>
+  <p>
+    This project lives on
+    <a href="https://github.com/jovylle/mini-projects" target="_blank"
+      >GitHub</a
+    >
+    and is automatically deployed through Netlify. Drop in CSV exports that
+    still contain Dynamo-style type wrappers and the parser unwraps each value
+    into plain JSON primitives so downstream tooling—dashboards, databases, or
+    dashboards—can consume it immediately.
+  </p>
+  <p>
+    Learn more about my work and reach out at
+    <a href="https://jovylle.com" target="_blank">jovylle.com</a>.
+  </p>
+</section>
 
 <script defer src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 <script>
