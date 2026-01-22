@@ -1,53 +1,220 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Mini Projects</title>
-  <style>
-    body {
-      font-family: system-ui, sans-serif;
-      padding: 20px;
-      max-width: 900px;
-      margin: auto;
-    }
-    .project {
-      margin-bottom: 20px;
-    }
-    a {
-      font-size: 18px;
-      text-decoration: none;
-      color: #0066cc;
-    }
-  </style>
-</head>
-<body>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Mini Projects · Jovylle Bermudez</title>
+    <meta
+      name="description"
+      content="A small lab of frontend tools and experiments that make Dynamo-style CSV and other data more usable."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        background-color: #0f172a;
+      }
 
-<h2>Mini Projects</h2>
-<div id="projects"></div>
+      body {
+        margin: 0;
+        background:
+          linear-gradient(180deg, rgba(15, 23, 42, 0.9), #030711 55%),
+          #0f172a;
+        min-height: 100vh;
+      }
 
-<script>
-const PROJECTS = [
-  {
-    name: "CSV to JSON Converter",
-    path: "csv-to-json",
-    description: "Convert CSV to plain JSON in the browser"
-  }
-];
+      main {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 48px 20px 64px;
+        color: #e2e8f0;
+      }
 
-const container = document.getElementById("projects");
+      .hero {
+        margin-bottom: 32px;
+      }
 
-PROJECTS.forEach(p => {
-  const div = document.createElement("div");
-  div.className = "project";
+      .hero h1 {
+        margin: 0;
+        font-size: clamp(2.5rem, 4vw, 3.2rem);
+        color: #f8fafc;
+        line-height: 1.2;
+      }
 
-  div.innerHTML = `
-    <a href="./${p.path}/">${p.name}</a>
-    <div>${p.description}</div>
-  `;
+      .hero p {
+        max-width: 640px;
+        line-height: 1.6;
+        color: #cbd5f5;
+      }
 
-  container.appendChild(div);
-});
-</script>
+      .hero .meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 18px;
+      }
 
-</body>
+      .pill {
+        border: 1px solid rgba(148, 163, 184, 0.7);
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-size: 0.85rem;
+        color: #94a3b8;
+      }
+
+      .projects-grid {
+        display: grid;
+        gap: 20px;
+      }
+
+      .project-card {
+        background: rgba(15, 23, 42, 0.75);
+        border: 1px solid rgba(148, 163, 184, 0.3);
+        border-radius: 18px;
+        padding: 28px;
+        box-shadow: 0 25px 45px rgba(2, 6, 23, 0.6);
+      }
+
+      .project-card h2 {
+        margin: 0 0 10px;
+        color: #f8fafc;
+        font-size: 1.8rem;
+      }
+
+      .project-card p {
+        margin: 0 0 16px;
+        line-height: 1.7;
+        color: #cbd5f5;
+      }
+
+      .feature-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 12px;
+        display: grid;
+        gap: 6px;
+        color: #94a3b8;
+      }
+
+      .project-card a {
+        color: #38bdf8;
+        text-decoration: none;
+        font-weight: 600;
+        margin-right: 18px;
+      }
+
+      .about {
+        margin-top: 42px;
+        background: rgba(248, 250, 252, 0.04);
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        border-radius: 16px;
+        padding: 26px;
+      }
+
+      .about h3 {
+        margin: 0 0 10px;
+        color: #f8fafc;
+      }
+
+      .about p {
+        margin: 0 0 12px;
+        color: #cbd5f5;
+        line-height: 1.6;
+      }
+
+      .contact-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .contact-row a {
+        color: #a5b4fc;
+        text-decoration: none;
+        font-weight: 500;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header class="hero">
+        <div class="pill">Jovylle Bermudez</div>
+        <h1>Small lab, big clarity.</h1>
+        <p>
+          Experiments and tools built to make hard data readable. Every project is
+          curated, deployed, and linked back to <a
+            href="https://jovylle.com"
+            target="_blank"
+            rel="noreferrer"
+            style="color: #38bdf8;"
+            >jovylle.com</a
+          >. Latest work lives on GitHub and deploys automatically via Netlify.
+        </p>
+        <div class="meta">
+          <div class="pill">Software engineer · Data automation</div>
+          <div class="pill">Remote · San Francisco Bay Area</div>
+        </div>
+      </header>
+
+      <section class="projects-grid">
+        <article class="project-card">
+          <div class="pill">Featured</div>
+          <h2>Dynamo Attribute CSV Normalizer</h2>
+          <p>
+            Upload CSV exports that still contain Dynamo-style attribute wrappers
+            (S, N, BOOL, M, etc.). The parser unwraps each value into plain JSON
+            so dashboards, automation scripts, or databases can consume it
+            immediately.
+          </p>
+          <ul class="feature-list">
+            <li>Live converter: view parsed JSON instantly in the browser.</li>
+            <li>Custom normalization keeps booleans, arrays, and nested objects intact.</li>
+            <li>Deploys via Netlify every time the repo receives a push.</li>
+          </ul>
+          <div>
+            <a href="./csv-to-json/" target="_blank" rel="noreferrer">Open demo</a>
+            <a
+              href="https://github.com/jovylle/mini-projects/tree/master/projects/csv-to-json"
+              target="_blank"
+              rel="noreferrer"
+              >View source</a
+            >
+          </div>
+        </article>
+      </section>
+
+      <section class="about">
+        <h3>About Jovylle</h3>
+        <p>
+          I build microprojects that help teams translate messy data into
+          something they can ship. Whether it is optimizing dashboards or
+          prototyping automation flows, every experiment is tied to a story on
+          jovylle.com and the code lives in this repo.
+        </p>
+        <p>
+          Reach out via email or follow along on GitHub. I am open to
+          collaborations, consulting, and any project that needs reliable data work.
+        </p>
+        <div class="contact-row">
+          <a href="mailto:jovyllebermudez@gmail.com">Email</a>
+          <a href="https://jovylle.com" target="_blank" rel="noreferrer">jovylle.com</a>
+          <a
+            href="https://github.com/jovylle/mini-projects"
+            target="_blank"
+            rel="noreferrer"
+            >GitHub</a
+          >
+        </div>
+      </section>
+    </main>
+  </body>
 </html>
