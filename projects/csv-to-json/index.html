@@ -35,37 +35,98 @@
 <p>JSON output:</p>
 <textarea id="json" readonly></textarea>
 
+<script defer src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 <script>
 function convert() {
   const input = document.getElementById("csv").value.trim();
   if (!input) return;
 
-  const lines = input.split("\n");
-  const headers = lines[0].split(",").map(h => h.trim());
+  const parsed = Papa.parse(input, {
+    header: true,
+    skipEmptyLines: true,
+  });
 
-  const data = [];
+  const data = parsed.data.map(row => {
+    const normalized = {};
 
-  for (let i = 1; i < lines.length; i++) {
-    if (!lines[i].trim()) continue;
-
-    const values = lines[i].split(",");
-    const row = {};
-
-    headers.forEach((key, index) => {
-      let value = values[index]?.trim();
-
-      if (value === "true") value = true;
-      else if (value === "false") value = false;
-      else if (value !== "" && !isNaN(value)) value = Number(value);
-
-      row[key] = value ?? null;
+    Object.entries(row).forEach(([key, value]) => {
+      normalized[key] = normalizeCell(value);
     });
 
-    data.push(row);
-  }
+    return normalized;
+  });
 
   document.getElementById("json").value =
     JSON.stringify(data, null, 2);
+}
+
+function normalizeCell(value) {
+  if (value == null) return null;
+  const trimmed = value.toString().trim();
+  if (!trimmed) return null;
+
+  const lowered = trimmed.toLowerCase();
+  if (lowered === "true") return true;
+  if (lowered === "false") return false;
+  if (isNumeric(trimmed)) return Number(trimmed);
+
+  if (trimmed.startsWith("{") || trimmed.startsWith("[")) {
+    const parsed = tryParseJson(trimmed);
+    if (parsed !== undefined) return normalizeParsed(parsed);
+  }
+
+  return trimmed;
+}
+
+function isNumeric(value) {
+  return !Number.isNaN(Number(value)) && /^[+-]?\d+(\.\d+)?$/.test(value);
+}
+
+function tryParseJson(value) {
+  try {
+    return JSON.parse(value);
+  } catch {
+    return undefined;
+  }
+}
+
+function normalizeParsed(parsedValue) {
+  if (Array.isArray(parsedValue)) {
+    return parsedValue.map(normalizeParsed);
+  }
+
+  if (parsedValue && typeof parsedValue === "object") {
+    const keys = Object.keys(parsedValue);
+    if (keys.length === 1) {
+      const [key] = keys;
+      switch (key) {
+        case "S":
+          return parsedValue.S;
+        case "N":
+          return Number(parsedValue.N);
+        case "BOOL":
+          return Boolean(parsedValue.BOOL);
+        case "NULL":
+          return null;
+        case "M":
+          return normalizeParsed(parsedValue.M);
+        case "L":
+          return parsedValue.L.map(normalizeParsed);
+        case "SS":
+        case "NS":
+        case "BS":
+          return parsedValue[key];
+      }
+    }
+
+    const normalized = {};
+    keys.forEach(key => {
+      normalized[key] = normalizeParsed(parsedValue[key]);
+    });
+    return normalized;
+  }
+
+  return parsedValue;
 }
 </script>
 
